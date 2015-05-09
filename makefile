@@ -7,6 +7,7 @@ TARGET		=	Odev
 
 Odev		:	main.c	
 	gcc	-o	Odev	main.c
+	gcc	-o	sampler	sampler.c
 	./Odev
 
 clean		:
