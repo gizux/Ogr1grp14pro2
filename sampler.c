@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
      */
     s = shm;
 
-    for (c = 1; c <= 5; c++)
+    for (c = 1; c <= 9; c++)
         *s++ = c;
     *s = NULL;
 

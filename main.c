@@ -35,7 +35,7 @@ int main()
     if(!pid)
     { // sampler
         //printf("%s\n", "sampler");
-        execlp("sampler", "sampler", shmid, NULL);
+        execlp("/Users/erayalakese/Desktop/COP/sysodev2/smyaz/sampler", "/Users/erayalakese/Desktop/COP/sysodev2/smyaz/sampler", shmid, NULL);
     }
     else
     {
@@ -53,7 +53,7 @@ int main()
          * Now read what the server put in the memory.
          */
         for (s = shm; *s != NULL; s++)
-            printf("%d -",*s);
+            printf("%d ",*s);
         putchar('\n');
 
         /*
