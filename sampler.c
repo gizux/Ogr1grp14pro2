@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-    int c;
+    int c,shmid;
     key_t key;
     char *shm, *s;
     int record_no = 0;
@@ -16,7 +16,10 @@ int main(int argc, char *argv[])
 
     int r = rand() % 100;
 
-    int shmid = atoi(argv[argc-1]);
+    if ((shmid = shmget(5678, SHMSZ, IPC_CREAT | 0666)) < 0) {
+        perror("shmget");
+        exit(1);
+    }
 
     
     /*

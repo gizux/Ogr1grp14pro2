@@ -35,7 +35,7 @@ int main()
     if(!pid)
     { // sampler
         //printf("%s\n", "sampler");
-        execlp("/Users/erayalakese/Desktop/COP/sysodev2/smyaz/sampler", "/Users/erayalakese/Desktop/COP/sysodev2/smyaz/sampler", shmid, NULL);
+        execlp("sampler", "sampler", shmid, NULL);
     }
     else
     {
