@@ -2,30 +2,23 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define SHMSZ     8
 
-main()
+int main(int argc, char *argv[])
 {
     int c;
-    int shmid;
     key_t key;
     char *shm, *s;
+    int record_no = 0;
 
-    /*
-     * We'll name our shared memory segment
-     * "5678".
-     */
-    key = 5678;
 
-    /*
-     * Create the segment.
-     */
-    if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) {
-        perror("shmget");
-        exit(1);
-    }
+    int r = rand() % 100;
 
+    int shmid = atoi(argv[2]);
+
+    
     /*
      * Now we attach the segment to our data space.
      */
@@ -41,7 +34,7 @@ main()
     s = shm;
 
     for (c = 1; c <= 5; c++)
-        *s++ = c;
+        *s++ = '-';
     *s = NULL;
 
     /*

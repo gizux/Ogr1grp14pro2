@@ -12,3 +12,4 @@ Odev		:	main.c
 
 clean		:
 	rm	-rf	Odev
+	rm	-rf	sampler
