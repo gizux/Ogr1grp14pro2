@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     int r = rand() % 100;
 
-    int shmid = atoi(argv[2]);
+    int shmid = atoi(argv[argc-1]);
 
     
     /*
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     s = shm;
 
     for (c = 1; c <= 5; c++)
-        *s++ = '-';
+        *s++ = c;
     *s = NULL;
 
     /*

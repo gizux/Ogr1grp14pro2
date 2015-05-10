@@ -34,12 +34,13 @@ int main()
     int pid = fork();
     if(!pid)
     { // sampler
-        //execlp("sampler", "sampler", shmid, NULL);
+        //printf("%s\n", "sampler");
+        execlp("sampler", "sampler", shmid, NULL);
     }
     else
     {
         // Collector
-        
+        //printf("%s\n", "Collector");
         /*
          * Now we attach the segment to our data space.
          */
@@ -47,7 +48,7 @@ int main()
             perror("shmat");
             exit(1);
         }
-        printf("%s\n", shm);
+
         /*
          * Now read what the server put in the memory.
          */
