@@ -12,8 +12,9 @@ void  main(int  argc, char *argv[])
      int    *ShmPTR;
      pid_t  pid;
      int    status;
+     int key = 55667;
 
-     ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
+     ShmID = shmget(key, 4*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
           printf("*** shmget error (server) ***\n");
           exit(1);
@@ -26,16 +27,21 @@ void  main(int  argc, char *argv[])
      }
 
      pid = fork();
+     while(1)
+     {
      if (pid < 0) {
           printf("*** fork error (server) ***\n");
           exit(1);
      }
      else if (pid == 0) {
-       char shm;
-       shm = (char) ShmID;
+       char buffer[5];
+       snprintf(buffer, 5, "%d", key);
+
        //Sampler(ShmID);
-       execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", shm, NULL);
+       execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", buffer, NULL);
+       perror("execlp error");
        //exit(0);
+       
      }
 
      wait(&status);
@@ -49,12 +55,15 @@ void  main(int  argc, char *argv[])
      printf("   Collector found %d %d in shared memory\n",
                 SharedMem[0], SharedMem[1]);
      
-     shmdt((void *) ShmPTR);
-     shmctl(ShmID, IPC_RMID, NULL);
-     
-     exit(1);
+     //shmdt((void *) ShmPTR);
+     //shmctl(ShmID, IPC_RMID, NULL);
+     sleep(1);
+     }
+     //while(1);
+     //exit(1);
      
 }
+int r = 0;
 
 void  Sampler(int ShmID)
 {
@@ -76,7 +85,7 @@ void  Sampler(int ShmID)
      int random;
      
      random = rand()%100+1;
-     int r = 0;
+     
      
      ShmPTR[0] = r;
      ShmPTR[1] = random;

@@ -10,14 +10,14 @@ void  main(int  argc, char *argv[])
      int    ShmID;
      int    *ShmPTR;
      
-     ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
+     ShmID = shmget(atoi(argv[1]), 4*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
           printf("*** shmget error (server) ***\n");
           exit(1);
      }
      printf("Sampler has received a shared memory of four integers...\n");
 printf("%d\n", ShmID);
-
+  
      ShmPTR = (int *) shmat(ShmID, NULL, 0);
      if ((int) ShmPTR == -1) {
           printf("*** shmat error (server) ***\n");
@@ -27,7 +27,7 @@ printf("%d\n", ShmID);
      
      int random;
      
-     random = rand()%100+1;
+     random = rand()%100;
      int r = 0;
      
      ShmPTR[0] = r;
