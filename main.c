@@ -1,110 +1,91 @@
-// Program: Kaynak Dosyasi
-// Tarih: 29.12.13
-// Grup elemanlari: Volkan DEMIR, Gizem ULUTAS, Oguzcan DUMAN, Kubra ALI, Ahmet BOZANLAR
+#include  <stdio.h>
+#include  <stdlib.h>
+#include  <sys/types.h>
+#include  <sys/ipc.h>
+#include  <sys/shm.h>
 
+void  Sampler(int);
 
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <stdio.h>
-
-#define SHMSZ     27
-
-main()
+void  main(int  argc, char *argv[])
 {
-    int pid = fork();
-    if(!pid)
-    {
-        int shmid;
-        key_t key;
-        char *shm, *s;
+     int    ShmID;
+     int    *ShmPTR;
+     pid_t  pid;
+     int    status;
 
-        /*
-         * We need to get the segment named
-         * "5678", created by the server.
-         */
-        key = 5678;
+     ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
+     if (ShmID < 0) {
+          printf("*** shmget error (server) ***\n");
+          exit(1);
+     }
 
-        /*
-         * Locate the segment.
-         */
-        if ((shmid = shmget(key, SHMSZ, 0666)) < 0) {
-            perror("shmget");
-            exit(1);
-        }
+     ShmPTR = (int *) shmat(ShmID, NULL, 0);
+     if ((int) ShmPTR == -1) {
+          printf("*** shmat error (server) ***\n");
+          exit(1);
+     }
 
-        /*
-         * Now we attach the segment to our data space.
-         */
-        if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
-            perror("shmat");
-            exit(1);
-        }
+     pid = fork();
+     if (pid < 0) {
+          printf("*** fork error (server) ***\n");
+          exit(1);
+     }
+     else if (pid == 0) {
+       char shm;
+       shm = (char) ShmID;
+       //Sampler(ShmID);
+       execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", shm, NULL);
+       //exit(0);
+     }
 
-        /*
-         * Now read what the server put in the memory.
-         */
-        for (s = shm; *s != NULL; s++)
-            putchar(*s);
-        putchar('\n');
+     wait(&status);
+     //sClientProcess();
+     int* SharedMem;
+     SharedMem = (int *) shmat(ShmID, NULL, 0);
+     if ((int) SharedMem == -1) {
+          printf("*** shmat error (server) ***\n");
+     }
+  
+     printf("   Collector found %d %d in shared memory\n",
+                SharedMem[0], SharedMem[1]);
+     
+     shmdt((void *) ShmPTR);
+     shmctl(ShmID, IPC_RMID, NULL);
+     
+     exit(1);
+     
+}
 
-        /*
-         * Finally, change the first character of the 
-         * segment to '*', indicating we have read 
-         * the segment.
-         */
-        *shm = '*';
+void  Sampler(int ShmID)
+{
+     //int    ShmID;
+     int    *ShmPTR;
+     
+     ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
+     if (ShmID < 0) {
+          printf("*** shmget error (server) ***\n");
+          exit(1);
+     }
 
-        exit(0);
-    }
-    else
-    {
-        char c;
-        int shmid;
-        key_t key;
-        char *shm, *s;
-
-        /*
-         * We'll name our shared memory segment
-         * "5678".
-         */
-        key = 5678;
-
-        /*
-         * Create the segment.
-         */
-        if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) {
-            perror("shmget");
-            exit(1);
-        }
-
-        /*
-         * Now we attach the segment to our data space.
-         */
-        if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
-            perror("shmat");
-            exit(1);
-        }
-
-        /*
-         * Now put some things into the memory for the
-         * other process to read.
-         */
-        s = shm;
-
-        for (c = 'a'; c <= 'z'; c++)
-            *s++ = c;
-        *s = NULL;
-
-        /*
-         * Finally, we wait until the other process 
-         * changes the first character of our memory
-         * to '*', indicating that it has read what 
-         * we put there.
-         */
-        while (*shm != '*')
-            sleep(1);
-
-        exit(0);
-    }
+     ShmPTR = (int *) shmat(ShmID, NULL, 0);
+     if ((int) ShmPTR == -1) {
+          printf("*** shmat error (server) ***\n");
+          exit(1);
+     }
+     
+     int random;
+     
+     random = rand()%100+1;
+     int r = 0;
+     
+     ShmPTR[0] = r;
+     ShmPTR[1] = random;
+     
+     r++;
+     random = 0;
+     printf("Sampler has filled %d %d in shared memory...\n",
+            ShmPTR[0], ShmPTR[1]);
+     
+     sleep(1);
+     
 }
