@@ -12,18 +12,17 @@ void  main(int  argc, char *argv[])
      
      ShmID = shmget(atoi(argv[1]), 4*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
-          printf("*** shmget error (server) ***\n");
+          printf("*** shmget hatası (server) ***\n");
           exit(1);
      }
-     printf("Sampler has received a shared memory of four integers...\n");
-printf("%d\n", ShmID);
+     printf("Sampler paylaşımlı belleğe erişti...\n");
   
      ShmPTR = (int *) shmat(ShmID, NULL, 0);
      if ((int) ShmPTR == -1) {
           printf("*** shmat error (server) ***\n");
           exit(1);
      }
-     printf("Sampler has attached the shared memory...\n");
+     printf("Sampler paylaşımlı belleğe bağlandı (attach)...\n");
      
      int random;
      
@@ -32,7 +31,7 @@ printf("%d\n", ShmID);
      
      ShmPTR[0] = r;
      ShmPTR[1] = random;
-     printf("Sampler has filled %d %d in shared memory...\n",
+     printf("Sampler paylaşılan belleği %d ve %d değerleriyle doldurdu...\n",
             ShmPTR[0], ShmPTR[1]);
      
      r++;

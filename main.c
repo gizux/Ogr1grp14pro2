@@ -16,13 +16,13 @@ void  main(int  argc, char *argv[])
 
      ShmID = shmget(key, 4*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
-          printf("*** shmget error (server) ***\n");
+          printf("*** shmget hatası (server) ***\n");
           exit(1);
      }
 
      ShmPTR = (int *) shmat(ShmID, NULL, 0);
      if ((int) ShmPTR == -1) {
-          printf("*** shmat error (server) ***\n");
+          printf("*** shmat hatası (server) ***\n");
           exit(1);
      }
 
@@ -30,16 +30,16 @@ void  main(int  argc, char *argv[])
      while(1)
      {
      if (pid < 0) {
-          printf("*** fork error (server) ***\n");
+          printf("*** fork hatası (server) ***\n");
           exit(1);
      }
      else if (pid == 0) {
        char buffer[5];
        snprintf(buffer, 5, "%d", key);
 
-       //Sampler(ShmID);
-       execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", buffer, NULL);
-       perror("execlp error");
+       Sampler(ShmID);
+       //execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", buffer, NULL);
+       perror("execlp hatası");
        //exit(0);
        
      }
@@ -49,10 +49,10 @@ void  main(int  argc, char *argv[])
      int* SharedMem;
      SharedMem = (int *) shmat(ShmID, NULL, 0);
      if ((int) SharedMem == -1) {
-          printf("*** shmat error (server) ***\n");
+          printf("*** shmat hatası (server) ***\n");
      }
   
-     printf("   Collector found %d %d in shared memory\n",
+     printf("   Collector paylaşılan bellekten %d ve %d değerlerini okudu\n",
                 SharedMem[0], SharedMem[1]);
      
      //shmdt((void *) ShmPTR);
@@ -72,13 +72,13 @@ void  Sampler(int ShmID)
      
      ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
-          printf("*** shmget error (server) ***\n");
+          printf("*** shmget hatası (server) ***\n");
           exit(1);
      }
 
      ShmPTR = (int *) shmat(ShmID, NULL, 0);
      if ((int) ShmPTR == -1) {
-          printf("*** shmat error (server) ***\n");
+          printf("*** shmat hatası (server) ***\n");
           exit(1);
      }
      
@@ -92,7 +92,7 @@ void  Sampler(int ShmID)
      
      r++;
      random = 0;
-     printf("Sampler has filled %d %d in shared memory...\n",
+     printf("Sampler paylaşılan belleği %d ve %d değerleriyle doldurdu...\n",
             ShmPTR[0], ShmPTR[1]);
      
      sleep(1);
