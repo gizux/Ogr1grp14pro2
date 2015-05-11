@@ -1,6 +1,6 @@
-# Program: Makefile Derleme Dosyası.
-# Tarih: 29.12.13
-# Grup elemanları: Volkan DEMİR, Gizem ULUTAŞ, Oğuzcan DUMAN, Kübra ALİ, Ahmet BOZANLAR
+# Program: Makefile
+# Tarih: 11.05.2015
+# Grup elemanlari: Gizem ULUTAŞ <B101210033>, Mehmet Eray Alakese <G111210087>
 
 TARGET		=	Odev
 

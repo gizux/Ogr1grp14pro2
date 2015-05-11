@@ -1,3 +1,7 @@
+// Program: Kaynak Dosyasi
+// Tarih: 11.05.2015
+// Grup elemanlari: Gizem ULUTAŞ <B101210033>, Mehmet Eray Alakese <G111210087>
+
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <sys/types.h>
@@ -12,9 +16,9 @@ void  main(int  argc, char *argv[])
      int    *ShmPTR;
      pid_t  pid;
      int    status;
-     int key = 55667;
+     int key = 55668;
 
-     ShmID = shmget(key, 4*sizeof(int), IPC_CREAT | 0666);
+     ShmID = shmget(key, 20*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
           printf("*** shmget hatası (server) ***\n");
           exit(1);
@@ -38,7 +42,7 @@ void  main(int  argc, char *argv[])
        snprintf(buffer, 5, "%d", key);
 
        Sampler(ShmID);
-       //execlp("/home/gizux/Belgeler/ogr1grp14pro2/Sampler1","/home/gizux/Belgeler/ogr1grp14pro2/Sampler1", buffer, NULL);
+       //execlp("./Sampler1","./Sampler1", buffer, NULL);
        perror("execlp hatası");
        //exit(0);
        
@@ -70,7 +74,7 @@ void  Sampler(int ShmID)
      //int    ShmID;
      int    *ShmPTR;
      
-     ShmID = shmget(55667, 4*sizeof(int), IPC_CREAT | 0666);
+     ShmID = shmget(55668, 20*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
           printf("*** shmget hatası (server) ***\n");
           exit(1);

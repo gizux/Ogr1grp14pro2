@@ -1,3 +1,7 @@
+// Program: Sampler Dosyasi
+// Tarih: 11.05.2015
+// Grup elemanlari: Gizem ULUTAŞ <B101210033>, Mehmet Eray Alakese <G111210087>
+
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <sys/types.h>
@@ -10,7 +14,7 @@ void  main(int  argc, char *argv[])
      int    ShmID;
      int    *ShmPTR;
      
-     ShmID = shmget(atoi(argv[1]), 4*sizeof(int), IPC_CREAT | 0666);
+     ShmID = shmget(atoi(argv[1]), 20*sizeof(int), IPC_CREAT | 0666);
      if (ShmID < 0) {
           printf("*** shmget hatası (server) ***\n");
           exit(1);
